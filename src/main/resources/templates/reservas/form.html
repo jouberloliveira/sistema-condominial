@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Reserva</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 flex">
+<aside class="w-64 min-h-screen bg-white shadow-sm flex flex-col">
+  <div class="p-6 border-b"><h1 class="text-xl font-bold text-indigo-700">Condomínio Admin</h1></div>
+  <nav class="p-4 flex-1 space-y-1">
+    <a href="/" class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-100 font-medium text-sm">🏠 Início</a>
+    <a href="/unidades" class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-100 font-medium text-sm">🏢 Unidades</a>
+    <a href="/moradores" class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-100 font-medium text-sm">👤 Moradores</a>
+    <a href="/visitantes" class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-100 font-medium text-sm">🚶 Visitantes</a>
+    <a href="/reservas" class="flex items-center gap-2 px-3 py-2 rounded-lg bg-indigo-50 text-indigo-700 font-medium text-sm">📅 Reservas</a>
+    <a href="/ocorrencias" class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-100 font-medium text-sm">⚠️ Ocorrências</a>
+  </nav>
+</aside>
+<main class="flex-1 p-8">
+  <div class="max-w-lg">
+    <div class="flex items-center gap-3 mb-6">
+      <a href="/reservas" class="text-gray-400 hover:text-gray-600">← Voltar</a>
+      <h2 class="text-2xl font-bold text-gray-800" th:text="${reserva.id != null} ? 'Editar Reserva' : 'Nova Reserva'"></h2>
+    </div>
+    <div th:if="${errorMessage}" class="mb-4 bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg text-sm" th:text="${errorMessage}"></div>
+    <div class="bg-white rounded-lg shadow-sm p-6">
+      <form th:action="${reserva.id != null} ? @{/reservas/{id}(id=${reserva.id})} : @{/reservas}"
+            th:object="${reserva}" method="post" class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Unidade *</label>
+          <select th:field="*{unidade}" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500">
+            <option value="">Selecione...</option>
+            <option th:each="u : ${unidades}" th:value="${u.id}" th:text="${u.identificacao}"
+                    th:selected="${reserva.unidade != null and reserva.unidade.id == u.id}"></option>
+          </select>
+          <p th:if="${#fields.hasErrors('unidade')}" th:errors="*{unidade}" class="mt-1 text-xs text-red-600"></p>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Solicitante *</label>
+          <select th:field="*{solicitante}" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500">
+            <option value="">Selecione...</option>
+            <option th:each="m : ${moradores}" th:value="${m.id}" th:text="${m.nome + ' (' + m.unidade?.identificacao + ')'}"
+                    th:selected="${reserva.solicitante != null and reserva.solicitante.id == m.id}"></option>
+          </select>
+          <p th:if="${#fields.hasErrors('solicitante')}" th:errors="*{solicitante}" class="mt-1 text-xs text-red-600"></p>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Área *</label>
+          <select th:field="*{area}" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500">
+            <option value="">Selecione...</option>
+            <option th:each="a : ${areas}" th:value="${a}" th:text="${a.descricao}"></option>
+          </select>
+          <p th:if="${#fields.hasErrors('area')}" th:errors="*{area}" class="mt-1 text-xs text-red-600"></p>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Início *</label>
+          <input type="datetime-local" th:field="*{inicio}" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500"/>
+          <p th:if="${#fields.hasErrors('inicio')}" th:errors="*{inicio}" class="mt-1 text-xs text-red-600"></p>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Fim *</label>
+          <input type="datetime-local" th:field="*{fim}" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500"/>
+          <p th:if="${#fields.hasErrors('fim')}" th:errors="*{fim}" class="mt-1 text-xs text-red-600"></p>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Status *</label>
+          <select th:field="*{status}" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500">
+            <option value="">Selecione...</option>
+            <option th:each="s : ${statusList}" th:value="${s}" th:text="${s.descricao}"></option>
+          </select>
+          <p th:if="${#fields.hasErrors('status')}" th:errors="*{status}" class="mt-1 text-xs text-red-600"></p>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Observação</label>
+          <textarea th:field="*{observacao}" rows="3" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500"></textarea>
+        </div>
+        <div class="flex gap-3 pt-2">
+          <button type="submit" class="bg-indigo-600 text-white px-6 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700">Salvar</button>
+          <a href="/reservas" class="bg-gray-100 text-gray-700 px-6 py-2 rounded-lg text-sm font-medium hover:bg-gray-200">Cancelar</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</main>
+</body>
+</html>

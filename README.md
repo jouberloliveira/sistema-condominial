@@ -1,3 +1,21 @@
-# Sistema Condominial
+# Sistema de Administração Condominial
 
-Sistema de gestão condominial — Java 21 + Spring Boot 3.x
+Sistema web para gerenciamento de condomínios com Spring Boot + Tailwind CSS.
+
+## Requisitos
+- Java 21
+- Maven 3.8+
+
+## Executar
+```bash
+./mvnw spring-boot:run
+```
+
+Acesse: http://localhost:8080
+
+## Módulos
+- Unidades
+- Moradores
+- Visitantes
+- Reservas de Área Comum
+- Ocorrências
