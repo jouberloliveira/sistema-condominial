@@ -5,11 +5,13 @@ import br.com.condominial.domain.Unidade;
 import br.com.condominial.enums.SimNao;
 import br.com.condominial.repository.MoradorRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class MoradorService {
@@ -35,7 +37,8 @@ public class MoradorService {
             ? repository.findByCpf(morador.getCpf()).isPresent()
             : repository.existsByCpfAndIdNot(morador.getCpf(), morador.getId());
         if (cpfDuplicado) {
-            throw new BusinessException("CPF já cadastrado: " + morador.getCpf());
+            log.warn("Tentativa de cadastro com CPF duplicado: {}", maskCpf(morador.getCpf()));
+            throw new BusinessException("CPF já cadastrado");
         }
         if (morador.getResponsavel() == SimNao.SIM) {
             long count = morador.getId() == null
@@ -52,5 +55,12 @@ public class MoradorService {
     public void excluir(Long id) {
         buscarPorId(id);
         repository.deleteById(id);
+    }
+
+    private static String maskCpf(String cpf) {
+        if (cpf == null) return "***";
+        String digits = cpf.replaceAll("[^\\d]", "");
+        if (digits.length() < 9) return "***";
+        return "***.***.%s-**".formatted(digits.substring(6, 9));
     }
 }
