@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Condomínio Admin</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 flex">
+
+<!-- Sidebar -->
+<aside class="w-64 min-h-screen bg-white shadow-sm flex flex-col">
+  <div class="p-6 border-b">
+    <h1 class="text-xl font-bold text-indigo-700">Condomínio Admin</h1>
+  </div>
+  <nav class="p-4 flex-1 space-y-1">
+    <a href="/" class="flex items-center gap-2 px-3 py-2 rounded-lg bg-indigo-50 text-indigo-700 font-medium text-sm">🏠 Início</a>
+    <a href="/unidades" class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-100 font-medium text-sm">🏢 Unidades</a>
+    <a href="/moradores" class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-100 font-medium text-sm">👤 Moradores</a>
+    <a href="/visitantes" class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-100 font-medium text-sm">🚶 Visitantes</a>
+    <a href="/reservas" class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-100 font-medium text-sm">📅 Reservas</a>
+    <a href="/ocorrencias" class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-100 font-medium text-sm">⚠️ Ocorrências</a>
+  </nav>
+</aside>
+
+<!-- Main -->
+<main class="flex-1 p-8">
+  <h2 class="text-2xl font-bold text-gray-800 mb-6">Dashboard</h2>
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <a href="/unidades" class="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition group">
+      <div class="text-3xl mb-3">🏢</div>
+      <h3 class="text-lg font-semibold text-gray-800 group-hover:text-indigo-700">Unidades</h3>
+      <p class="text-sm text-gray-500 mt-1">Gerencie blocos e apartamentos</p>
+    </a>
+    <a href="/moradores" class="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition group">
+      <div class="text-3xl mb-3">👤</div>
+      <h3 class="text-lg font-semibold text-gray-800 group-hover:text-indigo-700">Moradores</h3>
+      <p class="text-sm text-gray-500 mt-1">Cadastro de moradores e responsáveis</p>
+    </a>
+    <a href="/visitantes" class="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition group">
+      <div class="text-3xl mb-3">🚶</div>
+      <h3 class="text-lg font-semibold text-gray-800 group-hover:text-indigo-700">Visitantes</h3>
+      <p class="text-sm text-gray-500 mt-1">Controle de acesso de visitantes</p>
+    </a>
+    <a href="/reservas" class="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition group">
+      <div class="text-3xl mb-3">📅</div>
+      <h3 class="text-lg font-semibold text-gray-800 group-hover:text-indigo-700">Reservas</h3>
+      <p class="text-sm text-gray-500 mt-1">Reservas de áreas comuns</p>
+    </a>
+    <a href="/ocorrencias" class="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition group">
+      <div class="text-3xl mb-3">⚠️</div>
+      <h3 class="text-lg font-semibold text-gray-800 group-hover:text-indigo-700">Ocorrências</h3>
+      <p class="text-sm text-gray-500 mt-1">Registro de ocorrências e manutenções</p>
+    </a>
+  </div>
+</main>
+
+</body>
+</html>
