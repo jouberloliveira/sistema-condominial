@@ -40,7 +40,7 @@
       <tbody>
         <tr th:each="m : ${moradores}" class="border-b hover:bg-gray-50">
           <td class="px-6 py-4 text-sm font-medium text-gray-800" th:text="${m.nome}"></td>
-          <td class="px-6 py-4 text-sm text-gray-600" th:text="${m.cpf}"></td>
+          <td class="px-6 py-4 text-sm text-gray-600" th:text="${#cpf.mask(m.cpf)}"></td>
           <td class="px-6 py-4 text-sm text-gray-600" th:text="${m.unidade?.identificacao}"></td>
           <td class="px-6 py-4 text-sm text-gray-600" th:text="${m.tipo?.descricao}"></td>
           <td class="px-6 py-4 text-sm">
