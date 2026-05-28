@@ -72,11 +72,4 @@ public class MoradorService {
         if (digits.length() < 9) return "***";
         return "***.***.%s-**".formatted(digits.substring(6, 9));
     }
-
-    private static String maskCpf(String cpf) {
-        if (cpf == null) return "***";
-        String digits = cpf.replaceAll("[^\\d]", "");
-        if (digits.length() < 9) return "***";
-        return "***.***.%s-**".formatted(digits.substring(6, 9));
-    }
 }
