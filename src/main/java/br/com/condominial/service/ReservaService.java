@@ -3,6 +3,7 @@ package br.com.condominial.service;
 import br.com.condominial.domain.ReservaAreaComum;
 import br.com.condominial.enums.StatusReserva;
 import br.com.condominial.repository.ReservaAreaComumRepository;
+import br.com.condominial.security.AccessControlService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,18 +15,25 @@ import java.util.List;
 public class ReservaService {
 
     private final ReservaAreaComumRepository repository;
+    private final AccessControlService accessControl;
 
     public List<ReservaAreaComum> listarTodas() {
-        return repository.findAll();
+        if (accessControl.isAdmin()) {
+            return repository.findAll();
+        }
+        return repository.findByUnidadeId(accessControl.getUnidadeId());
     }
 
     public ReservaAreaComum buscarPorId(Long id) {
-        return repository.findById(id)
+        ReservaAreaComum reserva = repository.findById(id)
             .orElseThrow(() -> new BusinessException("Reserva não encontrada: " + id));
+        accessControl.verificarAcesso(reserva.getUnidade().getId());
+        return reserva;
     }
 
     @Transactional
     public ReservaAreaComum salvar(ReservaAreaComum reserva) {
+        accessControl.verificarAcesso(reserva.getUnidade().getId());
         if (reserva.getFim() == null || reserva.getInicio() == null) {
             throw new BusinessException("Data/hora de início e fim são obrigatórios");
         }
@@ -50,7 +58,7 @@ public class ReservaService {
 
     @Transactional
     public void excluir(Long id) {
-        buscarPorId(id);
-        repository.deleteById(id);
+        ReservaAreaComum reserva = buscarPorId(id); // verificarAcesso chamado dentro de buscarPorId
+        repository.deleteById(reserva.getId());
     }
 }

@@ -12,6 +12,7 @@ public interface MoradorRepository extends JpaRepository<Morador, Long> {
     Optional<Morador> findByCpf(String cpf);
     boolean existsByCpfAndIdNot(String cpf, Long id);
     List<Morador> findByUnidade(Unidade unidade);
+    List<Morador> findByUnidadeId(Long unidadeId);
     long countByUnidadeAndResponsavel(Unidade unidade, SimNao responsavel);
     long countByUnidadeAndResponsavelAndIdNot(Unidade unidade, SimNao responsavel, Long id);
 }

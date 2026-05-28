@@ -4,6 +4,7 @@ import br.com.condominial.domain.Morador;
 import br.com.condominial.domain.Unidade;
 import br.com.condominial.enums.SimNao;
 import br.com.condominial.repository.MoradorRepository;
+import br.com.condominial.security.AccessControlService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -17,22 +18,30 @@ import java.util.List;
 public class MoradorService {
 
     private final MoradorRepository repository;
+    private final AccessControlService accessControl;
 
     public List<Morador> listarTodos() {
-        return repository.findAll();
+        if (accessControl.isAdmin()) {
+            return repository.findAll();
+        }
+        return repository.findByUnidadeId(accessControl.getUnidadeId());
     }
 
     public Morador buscarPorId(Long id) {
-        return repository.findById(id)
+        Morador morador = repository.findById(id)
             .orElseThrow(() -> new BusinessException("Morador não encontrado: " + id));
+        accessControl.verificarAcesso(morador.getUnidade().getId());
+        return morador;
     }
 
     public List<Morador> listarPorUnidade(Unidade unidade) {
+        accessControl.verificarAcesso(unidade.getId());
         return repository.findByUnidade(unidade);
     }
 
     @Transactional
     public Morador salvar(Morador morador) {
+        accessControl.verificarAcesso(morador.getUnidade().getId());
         boolean cpfDuplicado = morador.getId() == null
             ? repository.findByCpf(morador.getCpf()).isPresent()
             : repository.existsByCpfAndIdNot(morador.getCpf(), morador.getId());
@@ -53,8 +62,15 @@ public class MoradorService {
 
     @Transactional
     public void excluir(Long id) {
-        buscarPorId(id);
-        repository.deleteById(id);
+        Morador morador = buscarPorId(id); // verificarAcesso chamado dentro de buscarPorId
+        repository.deleteById(morador.getId());
+    }
+
+    private static String maskCpf(String cpf) {
+        if (cpf == null) return "***";
+        String digits = cpf.replaceAll("[^\\d]", "");
+        if (digits.length() < 9) return "***";
+        return "***.***.%s-**".formatted(digits.substring(6, 9));
     }
 
     private static String maskCpf(String cpf) {

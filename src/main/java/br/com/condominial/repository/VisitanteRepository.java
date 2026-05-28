@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface VisitanteRepository extends JpaRepository<Visitante, Long> {
     List<Visitante> findByUnidade(Unidade unidade);
+    List<Visitante> findByUnidadeId(Long unidadeId);
 }
