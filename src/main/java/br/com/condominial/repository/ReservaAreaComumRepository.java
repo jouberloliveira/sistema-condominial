@@ -27,4 +27,6 @@ public interface ReservaAreaComumRepository extends JpaRepository<ReservaAreaCom
         @Param("fim") LocalDateTime fim,
         @Param("excludeId") Long excludeId
     );
+
+    List<ReservaAreaComum> findByUnidadeId(Long unidadeId);
 }

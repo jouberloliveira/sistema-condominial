@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/base}"
+      lang="pt-BR">
+<head>
+    <title>Acesso Negado</title>
+</head>
+<body>
+<div layout:fragment="content" class="max-w-lg mx-auto mt-24 text-center">
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-12">
+        <div class="text-6xl mb-4">🚫</div>
+        <h1 class="text-2xl font-bold text-slate-800 mb-2">Acesso Negado</h1>
+        <p class="text-slate-500 mb-6">
+            Você não tem permissão para acessar este recurso.<br/>
+            Apenas o proprietário da unidade ou um administrador pode realizar esta ação.
+        </p>
+        <a th:href="@{/}"
+           class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-6 rounded-lg text-sm transition-colors">
+            ← Voltar ao início
+        </a>
+    </div>
+</div>
+</body>
+</html>
