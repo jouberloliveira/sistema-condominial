@@ -13,6 +13,11 @@ public class HomeController {
         return "index";
     }
 
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
+
     @GetMapping("/403")
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public String accessDenied() {
